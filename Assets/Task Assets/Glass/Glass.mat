@@ -64,9 +64,9 @@ Material:
     m_Floats:
     - _DisortStrenght: 3
     - _DisortStrength: 4.12
-    - _DistortionOnTexture: 0.567
+    - _DistortionOnTexture: 0.423
     - _Metalic: 0.246
-    - _Metallic: 0
+    - _Metallic: 0.114
     - _NormalStrenght: 0.01
     - _NormalStrength: 0.01
     - _QueueControl: 0
@@ -80,7 +80,7 @@ Material:
     m_Colors:
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _Tiling: {r: 0.1, g: 0.1, b: 0, a: 0}
-    - _TintColor: {r: 0, g: 0, b: 0, a: 1}
+    - _TintColor: {r: 1, g: 1, b: 1, a: 0.21176471}
   m_BuildTextureStacks: []
 --- !u!114 &1748688521998277390
 MonoBehaviour:
