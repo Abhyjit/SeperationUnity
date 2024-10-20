@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e450e8f65f7ddb746b6698662100defe, type: 3}
-  m_Name: Step1 10
+  m_Name: Step1 12
   m_EditorClassIdentifier: 
-  stepText: Collect the highlighted metal plate from the table.
-  stepAudio: {fileID: 8300000, guid: b3e911fa1b492b84abcfd1f4d6a988c5, type: 3}
+  stepText: As you can see water droplets on the plate collect the droplets in a
+    second highlighted beaker.
+  stepAudio: {fileID: 8300000, guid: ee92889ba49a1884db066a901553d91f, type: 3}
   objectsToEnable: []
   objectsToDisable: []

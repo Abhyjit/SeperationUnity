@@ -8,14 +8,14 @@ namespace Neur
         private float zCoord;
 
         public bool isDragging = false;
-       // public GameObject WaterDropper;
+       
 
         
         void OnMouseDown()
         {
             zCoord = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
             offset = gameObject.transform.position - GetMouseWorldPos();
-            isDragging = true;  // Start dragging
+            isDragging = true;  
         }
 
         
@@ -30,7 +30,7 @@ namespace Neur
       
         void OnMouseUp()
         {
-            isDragging = false;  // Stop dragging
+            isDragging = false;  
         }
 
         private Vector3 GetMouseWorldPos()
@@ -60,16 +60,42 @@ namespace Neur
             else if (other.CompareTag("BowlDrop"))
             {
                 StepManager.instance.EmptyBeaker.SetActive(false);
+                StepManager.instance.sandDropper.SetActive(true);
                 StepManager.instance.SandBeaker.SetActive(true);
+                StepManager.instance.SOundaudioSource.clip = StepManager.instance.WaterPouring;
+                StepManager.instance.SOundaudioSource.Play();
                 this.gameObject.SetActive(false);
                 other.gameObject.SetActive(false);
-                StepManager.instance.NextStepManually();
+                StepManager.instance.Invoke("NextStepManually", 5f);
             }
             else if (other.CompareTag("Sand"))
             {
                 this.gameObject.SetActive(false);
                 other.gameObject.SetActive(false) ;
+               
+                StepManager.instance.kettleDropper.SetActive(true);
+                StepManager.instance.SOundaudioSource.clip = StepManager.instance.WaterPouring;
+                StepManager.instance.SOundaudioSource.Play();
+                StepManager.instance.Invoke("NextStepManually", 5f);
+            }
+            else if (other.CompareTag("Plate"))
+            {
+                this.gameObject.SetActive(false);
+                other.gameObject.SetActive(false);
                 StepManager.instance.NextStepManually();
+
+
+            }
+            else if (other.CompareTag("Beaker2"))
+            {
+                this.gameObject.SetActive(false);
+                other.gameObject.SetActive(false);
+                StepManager.instance.beaker2Water.SetActive(true);
+                StepManager.instance.waterdroplets.SetActive(true);
+                StepManager.instance.SOundaudioSource.clip = StepManager.instance.waterDrop;
+                StepManager.instance.SOundaudioSource.Play();
+                StepManager.instance.Invoke("NextStepManually", 5f);
+
             }
         }
 

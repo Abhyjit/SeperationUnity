@@ -2,44 +2,32 @@ using Neur;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;  
+using UnityEngine.SceneManagement;
+using UnityEngine.Events;
+using System;
 
 namespace Neur
 {
     public class StepManager : MonoBehaviour
     {
-        public List<StepData> steps;
-        public int currentStep = 0;
-        public AudioSource audioSource;
-        public AudioSource SOundaudioSource;
-        public TMPro.TextMeshProUGUI stepTextUI;
+        public List<StepData> steps;  
+        public int currentStep = 0;  
+        public AudioSource audioSource; 
+        public AudioSource SOundaudioSource;  
+        public TMPro.TextMeshProUGUI stepTextUI; 
 
-        public bool stepCompleted = false;
-
+        public bool stepCompleted = false;  
         public static StepManager instance;
 
-        public GameObject Bowl;
-        public GameObject MovableBowl;
-        public GameObject Beaker;
-        public GameObject EmptyBeaker;
-        public GameObject SandBeaker;
+        public Dictionary<int, UnityAction> stepActions;  
 
-        public GameObject DropZone;
-        public GameObject BowlDropZone;
-        public GameObject waterDropper;
-        public GameObject media;
-        public GameObject media2;
-
-        public GameObject Kettle;
-        public GameObject SandZone;
-
-        public GameObject NextButton;
-
-        public AudioClip WaterPouring;
-        public AudioClip ClockTicking;
-
+        
+        public GameObject Bowl, MovableBowl, Beaker, EmptyBeaker, SandBeaker;
+        public GameObject DropZone, BowlDropZone, waterDropper, media, media2;
+        public GameObject Kettle, SandZone,sandDropper, kettleDropper,NextButton, Fire,FireBall,vapour;
+        public GameObject MetalPlate,MetalPlateDrop,MetalPlateDropper,waterdroplets,Beaker2,BeakerDrop2,beaker2Water,waterInBeaker,Sediment;
+        public AudioClip WaterPouring, ClockTicking,waterDrop;
         public Material Highlight;
-        public GameObject Fire;
 
         private void Awake()
         {
@@ -55,8 +43,38 @@ namespace Neur
 
         void Start()
         {
+
+            InitializeStepActions();
+
+            // Start tracking steps
             StartCoroutine(TrackStepsCoroutine());
         }
+
+
+        private void InitializeStepActions()
+        {
+            stepActions = new Dictionary<int, UnityAction>
+            {
+                { 0, Step0Interaction },
+                { 1, Step1Interaction },
+                { 2, Step2Interaction },
+                { 3, Step3Interaction },
+                { 4, Step4Interaction },
+                { 5, Step5Interaction },
+                { 6, Step6Interaction },
+                { 7, Step7Interaction },
+                { 8, Step8Interaction },
+                { 9, Step9Interaction },
+                {10,Step10Interaction },
+                {11,Step11Interaction },
+                {12,Step12Interaction },
+                {13,Step13Interaction },
+                {14,Step14Interaction },
+                {15,Step15Interaction },
+            };
+        }
+
+
 
         private IEnumerator TrackStepsCoroutine()
         {
@@ -66,7 +84,7 @@ namespace Neur
 
                 while (!stepCompleted)
                 {
-                    yield return null;
+                    yield return null; 
                 }
 
                 stepCompleted = false;
@@ -96,7 +114,12 @@ namespace Neur
             audioSource.Play();
 
             TriggerGameObjectEvents(step);
-            HandleStepInteraction(stepIndex);
+
+            
+            if (stepActions.ContainsKey(stepIndex))
+            {
+                stepActions[stepIndex].Invoke();
+            }
         }
 
         private void TriggerGameObjectEvents(StepData step)
@@ -118,66 +141,166 @@ namespace Neur
             }
         }
 
-        private void HandleStepInteraction(int stepIndex)
+        
+        private void Step0Interaction()
         {
-            switch (stepIndex)
-            {
-                case 0:
-                    Debug.Log("Interaction for Step 0");
-                    Bowl.GetComponent<HighlightOnClick>().enabled = false;
-                    break;
-                case 1:
-                    Debug.Log("Interaction for Step 1");
-                    NextButton.SetActive(false);
-                    Bowl.GetComponent<HighlightOnClick>().enabled = true;
-                    Bowl.GetComponent<MeshRenderer>().material = Highlight;
-                    break;
-                case 2:
-                    Bowl.GetComponent<HighlightOnClick>().enabled = false;
-                    Beaker.GetComponent<DragAndDrop>().enabled = true;
-                    DropZone.gameObject.SetActive(true);
-                    Debug.Log("Interaction for Step 2");
-                    break;
-                case 3:
-                    SOundaudioSource.clip = ClockTicking;
-                    SOundaudioSource.Play();
-                    Debug.Log("Interaction for Step 3");
-                    break;
-                case 4:
-                    waterDropper.gameObject.SetActive(false);
-                    media.SetActive(false);
-                    media2.GetComponent<Rigidbody>().freezeRotation = true;
-                    media2.GetComponent<ConstantForce>().enabled = false;
-                    Debug.Log("Interaction for Step 4");
-                    break;
-                case 5:
-                    Bowl.SetActive(false);
-                    EmptyBeaker.SetActive(true);
-                    MovableBowl.SetActive(true);
-                    BowlDropZone.SetActive(true);
-                    Debug.Log("Interaction for Step 5");
-                    break;
-                case 6:
-                    Debug.Log("Interaction for Step 6");
-                    break;
-                case 7:
-                    Kettle.SetActive(true);
-                    Kettle.GetComponent<HighlightOnClick>().enabled = true;
-                    Kettle.GetComponent<MeshRenderer>().material = Highlight;
-                    Debug.Log("Interaction for Step 7");
-                    break;
-                case 8:
-                    SandBeaker.GetComponent<DragAndDrop>().enabled = true;
-                    SandZone.SetActive(true);
-                    Debug.Log("Interaction for Step 8");
-                    break;
-                case 9:
-                    Fire.SetActive(true);
-                    break;
-                default:
-                    Debug.Log("No specific interaction for this step.");
-                    break;
-            }
+            Debug.Log("Interaction for Step 0");
+            Bowl.GetComponent<HighlightOnClick>().enabled = false;
+            Bowl.GetComponent<HighlightOnClick>().IsHighlighted = true;
+        }
+
+        private void Step1Interaction()
+        {
+            Debug.Log("Interaction for Step 1");
+            NextButton.SetActive(false);
+            Bowl.GetComponent<HighlightOnClick>().enabled = true;
+            Bowl.GetComponent<MeshRenderer>().material = Highlight;
+        }
+
+        private void Step2Interaction()
+        {
+            Bowl.GetComponent<HighlightOnClick>().enabled = false;
+            Beaker.GetComponent<DragAndDrop>().enabled = true;
+            DropZone.gameObject.SetActive(true);
+            Debug.Log("Interaction for Step 2");
+        }
+
+        private void Step3Interaction()
+        {
+            SOundaudioSource.clip = ClockTicking;
+            SOundaudioSource.Play();
+            NextButton.SetActive(true);
+            Debug.Log("Interaction for Step 3");
+        }
+
+        private void Step4Interaction()
+        {
+            
+            waterDropper.gameObject.SetActive(false);
+            media.SetActive(false);
+            media2.GetComponent<Rigidbody>().freezeRotation = true;
+            media2.GetComponent<ConstantForce>().enabled = false;
+            Debug.Log("Interaction for Step 4");
+        }
+
+        private void Step5Interaction()
+        {
+            NextButton.SetActive(false);
+            Bowl.SetActive(false);
+            EmptyBeaker.SetActive(true);
+            MovableBowl.SetActive(true);
+            BowlDropZone.SetActive(true);
+            Debug.Log("Interaction for Step 5");
+        }
+
+        private void Step6Interaction() 
+        {
+            NextButton.SetActive(true);
+            sandDropper.gameObject.SetActive(false);
+            Debug.Log("Interaction for Step 6");
+        }
+        private void Step7Interaction()
+        { 
+            Kettle.SetActive(true); 
+            Kettle.GetComponent<HighlightOnClick>().enabled = true;
+            Kettle.GetComponent<HighlightOnClick>().IsHighlighted = true;
+            Kettle.GetComponent<MeshRenderer>().material = Highlight;
+            NextButton.SetActive(false);
+            Debug.Log("Interaction for Step 7");
+        }
+        private void Step8Interaction()
+        { 
+            SandBeaker.GetComponent<DragAndDrop>().enabled = true; 
+            SandZone.SetActive(true); 
+            Debug.Log("Interaction for Step 8");
+        }
+        private void Step9Interaction() 
+        { 
+            kettleDropper.gameObject.SetActive(false);
+            Fire.SetActive(true); 
+            Debug.Log("Interaction for Step 9"); 
+        }
+        private void Step15Interaction()
+        {
+            Debug.Log("Interaction for Step 15");
+        }
+
+        private void Step14Interaction()
+        {
+            Debug.Log("Interaction for Step 14");
+            vapour.SetActive(false);
+            waterInBeaker.SetActive(false);
+            Sediment.SetActive(true);
+            Fire.SetActive(false);
+            FireBall.SetActive(false);
+            beaker2Water.SetActive(false);
+            waterdroplets.SetActive(false);
+            NextButton.SetActive(true);
+        }
+
+        private void Step13Interaction()
+        {
+            Debug.Log("Interaction for Step 13");
+            NextButton.SetActive(true);
+                   
+           
+        }
+
+        private void Step12Interaction()
+        {
+            Debug.Log("Interaction for Step 12");
+            MetalPlateDropper.SetActive(true);
+            Beaker2.SetActive(true);
+            Beaker2.GetComponent<MeshRenderer>().material = Highlight;
+            Beaker2.GetComponent<HighlightOnClick>().enabled = true;
+            Beaker2.GetComponent<HighlightOnClick>().IsHighlighted2 = true;
+            
+            //Beaker2.GetComponent<HighlightOnClick>().IsHighlighted = true;
+
+
+
+        }
+
+        private void Step11Interaction()
+        {
+            Debug.Log("Interaction for Step 11");
+            MetalPlateDrop.SetActive(true);
+        }
+
+        private void Step10Interaction()
+        {
+            MetalPlate.gameObject.SetActive(true);
+            MetalPlate.GetComponent<HighlightOnClick>().enabled = true;
+            MetalPlate.GetComponent<HighlightOnClick>().IsHighlighted = true;
+            MetalPlate.GetComponent<MeshRenderer>().material = Highlight;
+            Debug.Log("Interaction for Step 10");
+        }
+        
+        public void watervapour()
+        {
+            Invoke("WaterVapourNext", 5f);
+        }
+        private void WaterVapourNext()
+        {
+            vapour.SetActive(true);
+            Invoke("NextStepManually", 2f);
+        }
+        
+        public void ReloadScene()
+        { 
+            Scene currentScene = SceneManager.GetActiveScene(); SceneManager.LoadScene(currentScene.name); 
+        }
+        public void PauseGame() 
+        { 
+            Time.timeScale = 0f; Debug.Log("Game Paused"); 
+        }
+        public void ResumeGame() 
+        { 
+            Time.timeScale = 1f; Debug.Log("Game Resumed");
+        }
+        public void QuitGame() 
+        {
+            Debug.Log("Quitting Game..."); Application.Quit();
         }
 
         public void NextStepManually()
@@ -188,32 +311,6 @@ namespace Neur
                 LoadStep(currentStep);
             }
         }
-
         
-        public void ReloadScene()
-        {
-            Scene currentScene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(currentScene.name);
-        }
-
-        public void PauseGame()
-        {
-            Time.timeScale = 0f;  
-            Debug.Log("Game Paused");
-        }
-
-        
-        public void ResumeGame()
-        {
-            Time.timeScale = 1f;  
-            Debug.Log("Game Resumed");
-        }
-
-       
-        public void QuitGame()
-        {
-            Debug.Log("Quitting Game...");
-            Application.Quit();
-        }
     }
 }

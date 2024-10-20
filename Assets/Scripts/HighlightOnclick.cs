@@ -10,6 +10,8 @@ namespace Neur
         public Material highlightColor;  
 
         private Renderer objectRenderer;
+        public bool IsHighlighted = false;
+        public bool IsHighlighted2 = false;
         //public GameObject once;
 
         void Start()
@@ -55,7 +57,17 @@ namespace Neur
             if (objectRenderer != null)
             {
                 objectRenderer.material = originalColor;
-                StepManager.instance.NextButton.SetActive(true);
+                if (IsHighlighted)
+                {
+                    IsHighlighted = false;
+                    StepManager.instance.NextStepManually();
+                }
+                else if (IsHighlighted2)
+                {
+                    IsHighlighted2 = false;
+                    StepManager.instance.BeakerDrop2.SetActive(true);
+                }
+                
             }
         }
     }
