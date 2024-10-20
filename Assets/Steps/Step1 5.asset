@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e450e8f65f7ddb746b6698662100defe, type: 3}
   m_Name: Step1 5
   m_EditorClassIdentifier: 
-  stepText: Now as we have done the Decantantion process, we have to separate mixed
-    salt from the remaining highlighted solution.
+  stepText: Now Carefully pour this solution in the another beaker and collect the
+    sand form the bottom of the Beaker.
   stepAudio: {fileID: 8300000, guid: 39342477644a3b44ba215d223fe9e6bc, type: 3}
   objectsToEnable: []
   objectsToDisable: []

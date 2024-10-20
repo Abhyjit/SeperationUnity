@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e450e8f65f7ddb746b6698662100defe, type: 3}
   m_Name: Step1 7
   m_EditorClassIdentifier: 
-  stepText: Welcome to the module of Separation process, In this Module we will learn
-    about Decantation, Evaporation, Condensation.
+  stepText: Collect highlighted Kettle from the table
   stepAudio: {fileID: 8300000, guid: f743a78e92096b948809a7d2f8fc12bd, type: 3}
   objectsToEnable: []
   objectsToDisable: []

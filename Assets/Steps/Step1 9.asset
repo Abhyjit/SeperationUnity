@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e450e8f65f7ddb746b6698662100defe, type: 3}
   m_Name: Step1 9
   m_EditorClassIdentifier: 
-  stepText: Welcome to the module of Separation process, In this Module we will learn
-    about Decantation, Evaporation, Condensation.
-  stepAudio: {fileID: 8300000, guid: 5b30aa9c05663db4885234319fabccfc, type: 3}
+  stepText: Turn on the stove and put the kettle on the stove and wait for some time
+    till vapour from the vessel comes out.
+  stepAudio: {fileID: 8300000, guid: a4306f4fe060e6b479942b2b65c01db9, type: 3}
+  objectsToEnable: []
+  objectsToDisable: []

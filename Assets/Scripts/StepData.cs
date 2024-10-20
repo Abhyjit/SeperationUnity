@@ -7,11 +7,11 @@ namespace Neur
 
     public class StepData : ScriptableObject
     {
-        public string stepText;  // Text describing the step
+        public string stepText;  
         public AudioClip stepAudio;
 
         public List<GameObject> objectsToEnable;
-        public List<GameObject> objectsToDisable;// Audio clip for the step
+        public List<GameObject> objectsToDisable;
     }
 }
 

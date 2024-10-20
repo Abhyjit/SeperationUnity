@@ -2,16 +2,19 @@ using Neur;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;  
+
 namespace Neur
 {
     public class StepManager : MonoBehaviour
     {
-        public List<StepData> steps;  // List of ScriptableObjects for each step
-        public int currentStep = 0;  // Tracks the current step
-        public AudioSource audioSource;  // Plays the step audio
-        public TMPro.TextMeshProUGUI stepTextUI;  // Display the step text in UI
+        public List<StepData> steps;
+        public int currentStep = 0;
+        public AudioSource audioSource;
+        public AudioSource SOundaudioSource;
+        public TMPro.TextMeshProUGUI stepTextUI;
 
-        public bool stepCompleted = false;  // Tracks if the current step is completed
+        public bool stepCompleted = false;
 
         public static StepManager instance;
 
@@ -27,12 +30,21 @@ namespace Neur
         public GameObject media;
         public GameObject media2;
 
+        public GameObject Kettle;
+        public GameObject SandZone;
+
         public GameObject NextButton;
+
+        public AudioClip WaterPouring;
+        public AudioClip ClockTicking;
+
+        public Material Highlight;
+        public GameObject Fire;
 
         private void Awake()
         {
-            if (instance == null) 
-            { 
+            if (instance == null)
+            {
                 instance = this;
             }
             else
@@ -40,28 +52,25 @@ namespace Neur
                 Destroy(gameObject);
             }
         }
+
         void Start()
         {
-            StartCoroutine(TrackStepsCoroutine());  // Start the coroutine to track steps
+            StartCoroutine(TrackStepsCoroutine());
         }
 
-        // Coroutine to track and progress steps
         private IEnumerator TrackStepsCoroutine()
         {
             while (currentStep < steps.Count)
             {
                 LoadStep(currentStep);
 
-                // Wait for the step to be completed
                 while (!stepCompleted)
                 {
-                    yield return null;  // Wait until stepCompleted becomes true
+                    yield return null;
                 }
 
-                // Reset the stepCompleted flag for the next step
                 stepCompleted = false;
 
-                // Move to the next step
                 if (currentStep < steps.Count - 1)
                 {
                     currentStep++;
@@ -69,12 +78,11 @@ namespace Neur
                 else
                 {
                     Debug.Log("All steps completed!");
-                    yield break;  // Exit the coroutine when all steps are completed
+                    yield break;
                 }
             }
         }
 
-        // Function to mark the current step as completed
         public void CompleteStep()
         {
             stepCompleted = true;
@@ -83,16 +91,16 @@ namespace Neur
         private void LoadStep(int stepIndex)
         {
             StepData step = steps[stepIndex];
-            stepTextUI.text = step.stepText;  // Display the step text
-            audioSource.clip = step.stepAudio;  // Set the audio clip
-            audioSource.Play();  // Play the audio
+            stepTextUI.text = step.stepText;
+            audioSource.clip = step.stepAudio;
+            audioSource.Play();
 
             TriggerGameObjectEvents(step);
             HandleStepInteraction(stepIndex);
         }
+
         private void TriggerGameObjectEvents(StepData step)
         {
-            // Enable specified GameObjects
             foreach (GameObject obj in step.objectsToEnable)
             {
                 if (obj != null)
@@ -101,7 +109,6 @@ namespace Neur
                 }
             }
 
-            // Disable specified GameObjects
             foreach (GameObject obj in step.objectsToDisable)
             {
                 if (obj != null)
@@ -110,39 +117,30 @@ namespace Neur
                 }
             }
         }
+
         private void HandleStepInteraction(int stepIndex)
         {
             switch (stepIndex)
             {
                 case 0:
-                    // Example interaction for Step 0
                     Debug.Log("Interaction for Step 0");
                     Bowl.GetComponent<HighlightOnClick>().enabled = false;
-                  //  StartCoroutine(WaitBeforeProceeding(10f));
-                    // Custom logic for step 0 (e.g., start an animation, activate an effect, etc.)
                     break;
-
                 case 1:
-                    // Example interaction for Step 1
                     Debug.Log("Interaction for Step 1");
                     NextButton.SetActive(false);
-                    Bowl.GetComponent<HighlightOnClick>().enabled= true;
-                    Bowl.GetComponent<HighlightOnClick>().HighlightObject();
-
-                    // Custom logic for step 1 (e.g., trigger a puzzle, change lighting, etc.)
+                    Bowl.GetComponent<HighlightOnClick>().enabled = true;
+                    Bowl.GetComponent<MeshRenderer>().material = Highlight;
                     break;
-
                 case 2:
-                    // Example interaction for Step 2
-
                     Bowl.GetComponent<HighlightOnClick>().enabled = false;
                     Beaker.GetComponent<DragAndDrop>().enabled = true;
                     DropZone.gameObject.SetActive(true);
                     Debug.Log("Interaction for Step 2");
-                    // Custom logic for step 2 (e.g., open a door, play a cutscene, etc.)
                     break;
                 case 3:
-                    //StartCoroutine(WaitBeforeProceeding(5f));
+                    SOundaudioSource.clip = ClockTicking;
+                    SOundaudioSource.Play();
                     Debug.Log("Interaction for Step 3");
                     break;
                 case 4:
@@ -155,25 +153,33 @@ namespace Neur
                 case 5:
                     Bowl.SetActive(false);
                     EmptyBeaker.SetActive(true);
-                    
                     MovableBowl.SetActive(true);
                     BowlDropZone.SetActive(true);
                     Debug.Log("Interaction for Step 5");
                     break;
                 case 6:
+                    Debug.Log("Interaction for Step 6");
                     break;
-
-
-                // Add more cases for additional steps
+                case 7:
+                    Kettle.SetActive(true);
+                    Kettle.GetComponent<HighlightOnClick>().enabled = true;
+                    Kettle.GetComponent<MeshRenderer>().material = Highlight;
+                    Debug.Log("Interaction for Step 7");
+                    break;
+                case 8:
+                    SandBeaker.GetComponent<DragAndDrop>().enabled = true;
+                    SandZone.SetActive(true);
+                    Debug.Log("Interaction for Step 8");
+                    break;
+                case 9:
+                    Fire.SetActive(true);
+                    break;
                 default:
                     Debug.Log("No specific interaction for this step.");
-                    
-
                     break;
             }
         }
 
-        // Optional function to allow manual progression (if needed)
         public void NextStepManually()
         {
             if (currentStep < steps.Count - 1)
@@ -182,16 +188,32 @@ namespace Neur
                 LoadStep(currentStep);
             }
         }
-        //public IEnumerator WaitBeforeProceeding(float waitTime)
-        //{
-        //    yield return new WaitForSeconds(waitTime);
-        //    print(waitTime);
-        //    CompleteStep(); // Proceed to the next step after the delay
-        //}
-        //public void Coroutiine(float hii)
-        //{
-        //    StartCoroutine(WaitBeforeProceeding(hii));
-        //}
-    }
 
+        
+        public void ReloadScene()
+        {
+            Scene currentScene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(currentScene.name);
+        }
+
+        public void PauseGame()
+        {
+            Time.timeScale = 0f;  
+            Debug.Log("Game Paused");
+        }
+
+        
+        public void ResumeGame()
+        {
+            Time.timeScale = 1f;  
+            Debug.Log("Game Resumed");
+        }
+
+       
+        public void QuitGame()
+        {
+            Debug.Log("Quitting Game...");
+            Application.Quit();
+        }
+    }
 }

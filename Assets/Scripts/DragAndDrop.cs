@@ -10,7 +10,7 @@ namespace Neur
         public bool isDragging = false;
        // public GameObject WaterDropper;
 
-        // Called when the mouse button is pressed down on the object
+        
         void OnMouseDown()
         {
             zCoord = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
@@ -18,7 +18,7 @@ namespace Neur
             isDragging = true;  // Start dragging
         }
 
-        // Called every frame while the object is being dragged
+        
         void OnMouseDrag()
         {
             if (isDragging)
@@ -27,13 +27,12 @@ namespace Neur
             }
         }
 
-        // Called when the mouse button is released
+      
         void OnMouseUp()
         {
             isDragging = false;  // Stop dragging
         }
 
-        // Get the mouse position in world coordinates
         private Vector3 GetMouseWorldPos()
         {
             Vector3 mousePoint = Input.mousePosition;
@@ -41,7 +40,7 @@ namespace Neur
             return Camera.main.ScreenToWorldPoint(mousePoint);
         }
 
-        // Detects when the draggable object enters a trigger zone
+       
         void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("DropZone"))
@@ -50,13 +49,13 @@ namespace Neur
                 StepManager.instance.waterDropper.SetActive(true);
                 StepManager.instance.media.GetComponent<ConstantForce>().enabled = true;
                 StepManager.instance.media2.GetComponent<ConstantForce>().enabled = true;
-
+                StepManager.instance.SOundaudioSource.clip = StepManager.instance.WaterPouring;
+                StepManager.instance.SOundaudioSource.Play();
                 //StepManager.instance.Coroutiine(2f);
                 this.gameObject.SetActive(false);
                 other.gameObject.SetActive(false);
-                
-                // Add custom logic here when the object enters the trigger zone
-                // For example, you can snap the object to the drop zone or trigger other actions
+                StepManager.instance.NextStepManually();
+
             }
             else if (other.CompareTag("BowlDrop"))
             {
@@ -64,16 +63,23 @@ namespace Neur
                 StepManager.instance.SandBeaker.SetActive(true);
                 this.gameObject.SetActive(false);
                 other.gameObject.SetActive(false);
+                StepManager.instance.NextStepManually();
+            }
+            else if (other.CompareTag("Sand"))
+            {
+                this.gameObject.SetActive(false);
+                other.gameObject.SetActive(false) ;
+                StepManager.instance.NextStepManually();
             }
         }
 
-        // Optional: Detect when the object exits the trigger zone
+        
         void OnTriggerExit(Collider other)
         {
             if (other.CompareTag("DropZone"))
             {
                 Debug.Log("Exited Drop Zone: " + other.name);
-                // Add custom logic here when the object leaves the trigger zone
+              
             }
         }
     }

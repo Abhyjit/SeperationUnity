@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e450e8f65f7ddb746b6698662100defe, type: 3}
   m_Name: Step1 4
   m_EditorClassIdentifier: 
-  stepText: Now Carefully pour this solution in the another beaker and collect the
-    sand form the bottom of the Beaker.
+  stepText: As you can see Sand has been settled down.
   stepAudio: {fileID: 8300000, guid: d5395d23a0346dc409d4586e457dc307, type: 3}
+  objectsToEnable: []
+  objectsToDisable: []

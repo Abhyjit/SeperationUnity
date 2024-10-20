@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e450e8f65f7ddb746b6698662100defe, type: 3}
   m_Name: Step1 8
   m_EditorClassIdentifier: 
-  stepText: Welcome to the module of Separation process, In this Module we will learn
-    about Decantation, Evaporation, Condensation.
+  stepText: Pour the salt solution into the highlighted beaker.
   stepAudio: {fileID: 8300000, guid: e5a3e83f5cb6bf94595816cc0203db2c, type: 3}
   objectsToEnable: []
   objectsToDisable: []
